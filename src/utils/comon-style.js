@@ -1,0 +1,1 @@
+export const disabledBtnStyle = "disabled:opacity-[0.7] disabled:cursor-not-allowed";
