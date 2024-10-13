@@ -6,7 +6,7 @@ import useQuestionsHook from "../hooks/questions";
 import { FETCH_PAIN_RESULT } from "../api/configure-apis";
 const SocialConcern = () => {
      const [selectedOptions, setSelectedOptions] = useState([]);
-     const { answer, setSocialConcerned, setLoading, loading } = useQuestion();
+     const { answer, setSocialConcerned, setLoading, loading, setResults } = useQuestion();
      const navigate = useNavigate();
 
      const {
@@ -57,8 +57,8 @@ const SocialConcern = () => {
                     if (!response.ok) throw new Error('Failed to fetch data');
 
                     const data = await response.json();
+                    setResults(data);
                     setLoading(false);
-                    console.log(data);
 
                     setSelectedOptions([]);
                     setSocialConcerned([]);

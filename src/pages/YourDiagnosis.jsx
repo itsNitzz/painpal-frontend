@@ -1,8 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../sections/Navbar";
+import { useQuestion } from "../contexts/questionContext";
 
 export default function YourDiagnosis() {
     const navigate = useNavigate();
+    const { answer } = useQuestion();
+
     return (
         <div className="min-h-screen bg-[url('/bg-light.png')] bg-no-repeat bg-cover from-blue-100 to-white text-20">
             <Navbar/>
@@ -50,15 +53,19 @@ export default function YourDiagnosis() {
 
                 <div className="flex flex-col justify-center mt-8 p-6  border border-[#1935CA] rounded-2xl">
                     <h2 className="mb-8 text-center text-2xl font-medium">Your diagnosis based on your answers</h2>
-                    <div className="grid gap-4 md:grid-cols-[repeat(3,minmax(250px,250px))] justify-around min-h-[137px]">
-                        {[1, 2, 3].map((i) => (
+                    {answer.results.length===0&&<p className="text-center text-xl font-medium text-[#FF0000]">No Diagnosis report available!</p>}
+                    {answer.results.length>0&&<div className="grid gap-4 md:grid-cols-[repeat(3,minmax(250px,250px))] justify-around min-h-[137px]">
+                        { answer.results.map((result, i) => (
                             <div key={i} className=" flex flex-col justify-center items-center rounded-lg  border border-[#1935CA] p-4 text-center max-w-[250px]">
                                 <h3 className="font-semibold">Diagnosis</h3>
-                                <p>diagnosis</p>
+                                <div className="text-base">
+                                    <p><span className="font-semibold">Disease: </span>{result.disease}</p>
+                                    <p><span className="font-semibold">PCT: </span>{result.pct}</p>
+                                </div>
                             </div>
                         ))}
-                    </div>
-                    <button className="my-10 py-4 font-medium text-[24px] w-[90%] self-center bg-[#00C0FF] border border-[#1935CA] rounded-2xl text-white">Click on the above diagnosis for confirmatory examination video tests</button>
+                    </div>}
+                  {  answer.results.length>0&&<button className="my-10 py-4 font-medium text-[24px] w-[90%] self-center bg-[#00C0FF] border border-[#1935CA] rounded-2xl text-white">Click on the above diagnosis for confirmatory examination video tests</button>}
                 </div>
 
                 <div>
