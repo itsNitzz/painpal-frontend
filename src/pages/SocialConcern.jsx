@@ -22,7 +22,7 @@ const SocialConcern = () => {
      const finalAnswers = useRef({});
 
      useEffect(() => {
-          setQuestions(answer.bodyPartQuestions['shoulder']);
+          setQuestions(answer.bodyPartQuestions);
      }, [answer])
 
      const handleClick = (option, text) => {

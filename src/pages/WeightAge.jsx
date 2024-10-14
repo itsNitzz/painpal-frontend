@@ -4,21 +4,18 @@ import { useQuestion } from "../contexts/questionContext";
 import { FETCH_PAIN_QUESTIONS } from "../api/configure-apis";
 
 const WeightAge = () => {
-     const { answer, setWeightType, setAgeRange, setBodyPartQuestions, setLoading, loading } = useQuestion();
+     const { answer, setWeightType, setAgeRange, setBodyPartQuestions } = useQuestion();
      const navigate = useNavigate();
 
      const onHandlePainPointClick = (painPoint) => {
-          setLoading(true);
           const getPainData = async () => {
                const response = await fetch(FETCH_PAIN_QUESTIONS);
                if (!response.ok) throw new Error('Failed to fetch data');
                const questionsData = await response.json();
                console.log(questionsData);
-               setBodyPartQuestions({ [painPoint]: questionsData });
-               setLoading(false);
+               setBodyPartQuestions( questionsData );
           }
           getPainData().catch(err => {
-               setLoading(false);
                console.log(err);
           });
      };
@@ -27,7 +24,7 @@ const WeightAge = () => {
           <div className="bg-[url('/bg-light.png')] bg-no-repeat bg-cover  min-h-screen">
                <Navbar />
                <div className="padding">
-                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-[33px] place-items-center padding">
+                    <div className="xl:grid flex flex-col xl:grid-cols-3 gap-[33px] place-items-center padding">
                          {
                               answer.Gender && answer.Gender === "male" ? (<>
                                    <div>
@@ -158,7 +155,7 @@ const WeightAge = () => {
                          </button>
 
                          <div className="flex flex-wrap items-center gap-[10px]">
-                              <Link style={loading || answer.AgeRange === "" || answer.WeightType === "" ? { pointerEvents: 'none' } : {}} to="/social-concern"
+                              <Link style={!answer.bodyPartQuestions?.length || answer.AgeRange === "" || answer.WeightType === "" ? { pointerEvents: 'none' } : {}} to="/social-concern"
                                    className="py-3 px-[21.5px] bg-white hover:bg-primary-100 rounded-md font-semibold hover:text-white transition-all border border-[#1935CA]">Next Question</Link>
                          </div>
                     </div>

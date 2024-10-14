@@ -17,7 +17,7 @@ export default function QuestionProvider({ children }) {
     WeightType: "",
     SocialConcerned: [],
     Involved: "",
-    bodyPartQuestions: {},
+    bodyPartQuestions: [],
     results:[]
   });
 
@@ -35,7 +35,7 @@ export default function QuestionProvider({ children }) {
   });
   const setInvolved = (data) => setAnswer({ ...answer, Involved: data });
   const setBodyPartQuestions = (data) => setAnswer((prev) => {
-    return { ...prev, bodyPartQuestions: { ...prev.bodyPartQuestions, ...data } }
+    return { ...prev, bodyPartQuestions:data }
   });
   const setResults = (data) => setAnswer((prev) => {
     return { ...prev, results: data }
