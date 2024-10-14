@@ -1,18 +1,28 @@
 import Navbar from "../sections/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuestion } from "../contexts/questionContext";
-import { useEffect, useState } from "react";
+import { FETCH_PAIN_QUESTIONS } from "../api/configure-apis";
 
 const WeightAge = () => {
-     const [active, setActive] = useState(false)
-     const { answer, setWeightType, setAgeRange } = useQuestion();
+     const { answer, setWeightType, setAgeRange, setBodyPartQuestions, setLoading, loading } = useQuestion();
      const navigate = useNavigate();
 
-     useEffect(() => {
-          if (answer.AgeRange !== "" && answer.WeightType !== "") {
-               setActive(true)
+     const onHandlePainPointClick = (painPoint) => {
+          setLoading(true);
+          const getPainData = async () => {
+               const response = await fetch(FETCH_PAIN_QUESTIONS);
+               if (!response.ok) throw new Error('Failed to fetch data');
+               const questionsData = await response.json();
+               console.log(questionsData);
+               setBodyPartQuestions({ [painPoint]: questionsData });
+               setLoading(false);
           }
-     }, [answer])
+          getPainData().catch(err => {
+               setLoading(false);
+               console.log(err);
+          });
+     };
+
      return (
           <div className="bg-[url('/bg-light.png')] bg-no-repeat bg-cover  min-h-screen">
                <Navbar />
@@ -20,26 +30,38 @@ const WeightAge = () => {
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-[33px] place-items-center padding">
                          {
                               answer.Gender && answer.Gender === "male" ? (<>
-                                   <img
-                                        src="/male.png"
-                                        alt=""
-                                        className="w-full max-w-[280px] h-[700px] flex-shrink-0 order-2 xl:order-none"
-                                   />
+                                   <div>
+                                        <img
+                                             src="/male.png"
+                                             alt="male body frontside"
+                                             className="w-full max-w-[280px] h-[700px] flex-shrink-0 order-2 xl:order-none"
+                                             useMap="#malefront"
+                                        />
+                                        <map name="malefront">
+                                             <area className="cursor-pointer" shape="circle" coords="70,120,30" alt="shoulder" onClick={() => onHandlePainPointClick('shoulder')} />
+                                        </map>
+                                   </div>
                                    <img
                                         src="/maleback.png"
-                                        alt=""
+                                        alt="male body backside"
                                         className="w-full max-w-[280px] h-[700px] flex-shrink-0 order-3 xl:order-none"
                                    />
                               </>) : (
                                    <>
-                                        <img
-                                             src="/femalefront.png"
-                                             alt=""
-                                             className="w-full max-w-[280px] h-[700px] flex-shrink-0 order-2 xl:order-none"
-                                        />
+                                        <div>
+                                             <img
+                                                  src="/femalefront.png"
+                                                  alt="female body frontside"
+                                                  className="w-full max-w-[280px] h-[700px] flex-shrink-0 order-2 xl:order-none"
+                                                  useMap="#femaleFront"
+                                             />
+                                             <map name="femaleFront">
+                                                  <area className="cursor-pointer" shape="circle" coords="70,120,30" alt="shoulder" onClick={() => onHandlePainPointClick('shoulder')} />
+                                             </map>
+                                        </div>
                                         <img
                                              src="/femaleback.png"
-                                             alt=""
+                                             alt="female body backside"
                                              className="w-full max-w-[280px] h-[700px] flex-shrink-0 order-3 xl:order-none"
                                         />
                                    </>
@@ -136,13 +158,8 @@ const WeightAge = () => {
                          </button>
 
                          <div className="flex flex-wrap items-center gap-[10px]">
-                              {active ? <Link to="/social-concern"
+                              <Link style={loading || answer.AgeRange === "" || answer.WeightType === "" ? { pointerEvents: 'none' } : {}} to="/social-concern"
                                    className="py-3 px-[21.5px] bg-white hover:bg-primary-100 rounded-md font-semibold hover:text-white transition-all border border-[#1935CA]">Next Question</Link>
-                                   : <button disabled
-                                        className="py-3 px-[21.5px] bg-white rounded-md font-semibold border border-[#1935CA]">Next Question</button>}
-                              <p className="text-black">
-                                   Questions 1/5
-                              </p>
                          </div>
                     </div>
                </div>

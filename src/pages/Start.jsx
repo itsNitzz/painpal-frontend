@@ -1,7 +1,4 @@
 import { Link } from "react-router-dom";
-import { FETCH_PAIN_QUESTIONS } from "../api/configure-apis";
-
-import {useQuestion} from "../contexts/questionContext";
 
 const Start = () => {
   const Infos = [
@@ -18,24 +15,6 @@ const Start = () => {
       numberColor: "#F2C9D8"
     }
   ];
-
-  const {answer, setBodyPartQuestions, setLoading, loading} = useQuestion();
-
-  const onHandlePainPointClick = (painPoint) => {
-    setLoading(true);
-    const getPainData = async()=>{
-      const response  =  await fetch(FETCH_PAIN_QUESTIONS);
-      if(!response.ok) throw new Error('Failed to fetch data');
-      const questionsData = await response.json();
-      console.log(questionsData);
-      setBodyPartQuestions({[painPoint]:questionsData});
-      setLoading(false);
-    }
-    getPainData().catch(err=>{
-      setLoading(false);
-      console.log(err);
-    });
-  };
 
   return (
     <section className="bg-[url('/bg-light-2.png')] bg-no-repeat bg-cover bg-center px-3 py-[30px] border-2 min-h-screen w-full">
@@ -76,7 +55,7 @@ const Start = () => {
                     alt="female-body"
                     className="max-w-[150px] md:max-w-[215px] mx-auto"
                   />
-                  <button onClick={()=>onHandlePainPointClick('shoulder')} className="active:scale-[0.98] absolute top-14 md:top-[5.3rem] md:left-6 z-[20] scale-[0.7] md:scale-[0.8]">
+                  <button className="absolute top-14 md:top-[5.3rem] md:left-6 z-[20] scale-[0.7] md:scale-[0.8]">
                     <img src="/pain-point.png" alt="pain-point" />
                   </button>
                   <button className="absolute top-[10rem] left-2 md:top-[15rem] md:left-5 z-[20] scale-[0.7] md:scale-[0.8]">
@@ -102,7 +81,6 @@ const Start = () => {
               </div>
             </div>
             <Link
-              style={loading ? {pointerEvents: 'none'}: {}}
               to="/gender"
               className="text-[45px] font-semibold text-center rounded-[25px]  px-[30px] py-1 h-fit mt-10 lg:mt-0 lg:-ml-[100px] text-primary-100 border-[#777777] border-[5px] cursor-pointer hover:scale-105 transition-all mb-10 z-[9999] bg-white"
             >

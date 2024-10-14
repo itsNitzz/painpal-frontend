@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../sections/Navbar";
+import { useState } from "react";
+
 import { useQuestion } from "../contexts/questionContext";
 
 export default function YourDiagnosis() {
     const navigate = useNavigate();
     const { answer } = useQuestion();
+    const [mode, setMode] = useState('submit');
 
     return (
         <div className="min-h-screen bg-[url('/bg-light.png')] bg-no-repeat bg-cover from-blue-100 to-white text-20">
@@ -14,9 +17,9 @@ export default function YourDiagnosis() {
 
                 <div className="space-y-6">
                     <div className="flex flex-wrap items-center justify-between gap-4 leading-16 font-medium">
-                        <h2 className="underline underline-offset-[12px] decoration-4">Enter email or phone number</h2>
-                        <h2 className="underline underline-offset-[12px] decoration-4">Log in to your account</h2>
-                        <div className="flex items-center gap-4 space-x-2 border-b-4 border-black pb-3">
+                        <h2 onClick={()=>setMode('submit')} className={`underline underline-offset-[14px] decoration-4 cursor-pointer ${mode==='submit'?'decoration-[#00C0FF]':'decoration-black'}`}>Enter email or phone number</h2>
+                        <h2 onClick={()=>setMode('login')} className={`underline underline-offset-[14px] decoration-4 cursor-pointer ${mode==='login'?'decoration-[#00C0FF]':'decoration-black'}`}>Log in to your account</h2>
+                        <div onClick={()=>setMode('signup')} className={`flex items-center gap-4 space-x-2 border-b-4 pb-3 cursor-pointer ${mode==='signup'?'border-[#00C0FF]':'border-black'}`}>
                             <span>Sign up with</span>
                             <button variant="ghost" size="icon" className="p-2 rounded-full border border-[#1935CA]">
                                 <img src="/google.png" alt="Google" width={20} height={20} />
