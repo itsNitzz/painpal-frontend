@@ -57,9 +57,8 @@ export default function YourDiagnosis() {
                     {answer.results.length>0&&<div className="grid gap-4 md:grid-cols-[repeat(3,minmax(250px,250px))] justify-around min-h-[137px]">
                         { answer.results.map((result, i) => (
                             <div key={i} className=" flex flex-col justify-center items-center rounded-lg  border border-[#1935CA] p-4 text-center max-w-[250px]">
-                                <h3 className="font-semibold">Diagnosis</h3>
+                                <h3 className="font-semibold">{result.disease}</h3>
                                 <div className="text-base">
-                                    <p><span className="font-semibold">Disease: </span>{result.disease}</p>
                                     <p><span className="font-semibold">PCT: </span>{result.pct}</p>
                                 </div>
                             </div>
